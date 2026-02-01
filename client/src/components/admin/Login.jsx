@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
   };
@@ -16,11 +19,16 @@ const Login = () => {
               Enter your credentials to access admin panel
             </p>
           </div>
-          <form onSubmit={handleSubmit}>
+          <form
+            onSubmit={handleSubmit}
+            className="mt-6 w-full sm:max-w-md text-gray-600"
+          >
             <div className="flex flex-col">
               <label>Email</label>
               <input
                 type="email"
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
                 required
                 placeholder="Email...."
                 className="border-b-2 border-gray-300 p-2 outline-none mb-6"
@@ -31,6 +39,8 @@ const Login = () => {
               <label>Password</label>
               <input
                 type="password"
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
                 required
                 placeholder="Password...."
                 className="border-b-2 border-gray-300 p-2 outline-none mb-6"
