@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 import React, { useEffect, useState } from "react";
 import { assets, dashboard_data } from "../../assets/assets";
+import BlogTableItem from "../../components/admin/BlogTableItem";
 
 const Dashboard = () => {
   const [dashboardData, setDashboardData] = useState({
@@ -85,7 +86,16 @@ const Dashboard = () => {
               </tr>
             </thead>
             <tbody>
-              
+              {dashboardData.recentBlogs.map((blog, index) => {
+                return (
+                  <BlogTableItem
+                    key={blog._id}
+                    blog={blog}
+                    fetchBlogs={fetchDashboard}
+                    index={index + 1}
+                  />
+                );
+              })}
             </tbody>
           </table>
         </div>
