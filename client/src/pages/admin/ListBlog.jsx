@@ -1,11 +1,11 @@
 import React from 'react'
 
-const BlogList = () => {
+const ListBlog = () => {
   return (
     <div>
-      
+      bd
     </div>
   )
 }
 
-export default BlogList
+export default ListBlog
