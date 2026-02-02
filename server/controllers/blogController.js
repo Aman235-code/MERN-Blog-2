@@ -8,38 +8,34 @@ export const addBlog = async (req, res) => {
       req.body.blog,
     );
 
-    const imageFile = req.file;
-
-    if (!title || !description || !category || !imageFile) {
+    if (!title || !description || !category) {
       return res.status(400).json({
         success: false,
         message: "Missing required fields",
       });
     }
 
-    const fileBuffer = fs.readFileSync(imageFile.path);
+    const fileBuffer = fs.readFileSync(req.file.path);
+    const base64File = fileBuffer.toString("base64");
+
     const response = await imageKit.upload({
-      file: fileBuffer,
-      fileName: imageFile.originalname,
-      folder: "/blogs",
+      file: fileBuffer.toString("base64"),
+      fileName: req.file.originalname,
+      folder: "blogs",
     });
 
-    const optimizedImageUrl = imageKit.url({
+    const image = imageKit.url({
       path: response.filePath,
       transformation: [
-        {
-          quality: "auto",
-        },
-        {
-          format: "webp",
-        },
-        {
-          width: "1280",
-        },
+        { quality: "auto" },
+        { format: "webp" },
+        { width: "1280" },
       ],
     });
 
-    const image = optimizedImageUrl;
+    console.log(image);
+
+    console.log(title, subTitle, description, category, image, isPublished);
 
     await Blog.create({
       title,
@@ -55,7 +51,9 @@ export const addBlog = async (req, res) => {
       message: "Blog added successfully",
     });
   } catch (error) {
-    return res.status(201).json({
+    console.error(error);
+    console.log(error);
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
