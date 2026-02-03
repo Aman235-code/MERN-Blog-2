@@ -20,7 +20,7 @@ blogRouter.get("/:blogId", getBlogById);
 blogRouter.delete("/delete/:id", auth, deleteBlogById);
 blogRouter.post("/toggle", auth, togglePublish);
 blogRouter.post("/add-comment", addComment);
-blogRouter.get("/comments", getBlogComments);
-blogRouter.get("/generate", auth, generateContent);
+blogRouter.get("/comments/:blogId", getBlogComments);
+blogRouter.post("/generate", auth, generateContent);
 
 export default blogRouter;

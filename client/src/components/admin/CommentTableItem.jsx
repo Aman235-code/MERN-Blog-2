@@ -27,9 +27,7 @@ const CommentTableItem = ({ comment, fetchComments }) => {
       const confirm = window.confirm("Are you sure?");
       if (!confirm) return;
 
-      const { data } = await axios.post("/api/admin/delete-comment", {
-        id: _id,
-      });
+      const { data } = await axios.delete(`/api/admin/delete-comment/${_id}`);
       data.success ? toast.success(data.message) : toast.error(data.message);
       fetchComments();
     } catch (error) {

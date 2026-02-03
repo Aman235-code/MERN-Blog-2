@@ -151,13 +151,12 @@ export const addComment = async (req, res) => {
 
 export const getBlogComments = async (req, res) => {
   try {
-    const { blogId } = req.body;
+    const { blogId } = req.params;
+
     const comments = await Comment.find({
       blog: blogId,
       isApproved: true,
-    }).sort({
-      createdAt: -1,
-    });
+    }).sort({ createdAt: -1 });
 
     return res.status(200).json({
       success: true,
@@ -172,13 +171,16 @@ export const getBlogComments = async (req, res) => {
   }
 };
 
+
 export const generateContent = async (req, res) => {
   try {
+    console.log("Here");
     const { prompt } = req.body;
     const content = await main(
       prompt + " Generate a blog content for this topic in simple text format",
     );
-    return res.json(200).json({
+    console.log(content);
+    return res.status(200).json({
       success: true,
       content,
     });
