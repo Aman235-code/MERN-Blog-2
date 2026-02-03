@@ -1,48 +1,35 @@
-import fs from "fs";
-import imageKit from "../config/imageKit.js";
 import Blog from "../models/Blog.js";
+import cloudinary from "../config/cloudinary.js";
+import getDataUri from "../config/dataUri.js";
 
 export const addBlog = async (req, res) => {
   try {
-    const { title, subTitle, description, category, isPublished } = JSON.parse(
-      req.body.blog,
-    );
+    const { title, subTitle, description, category, isPublished } = req.body;
 
-    if (!title || !description || !category) {
+    if (!title || !description || !category || !isPublished) {
       return res.status(400).json({
         success: false,
         message: "Missing required fields",
       });
     }
 
-    const fileBuffer = fs.readFileSync(req.file.path);
-    const base64File = fileBuffer.toString("base64");
+    let thumbnail = "";
 
-    const response = await imageKit.upload({
-      file: fileBuffer.toString("base64"),
-      fileName: req.file.originalname,
-      folder: "blogs",
-    });
+    if (req.file) {
+      const fileUri = getDataUri(req.file);
+      const uploadResult = await cloudinary.uploader.upload(fileUri, {
+        folder: "QuickBlog/blogs",
+      });
 
-    const image = imageKit.url({
-      path: response.filePath,
-      transformation: [
-        { quality: "auto" },
-        { format: "webp" },
-        { width: "1280" },
-      ],
-    });
-
-    console.log(image);
-
-    console.log(title, subTitle, description, category, image, isPublished);
+      thumbnail = uploadResult.secure_url;
+    }
 
     await Blog.create({
       title,
       subTitle,
       description,
       category,
-      image,
+      image: thumbnail,
       isPublished,
     });
 
@@ -51,7 +38,6 @@ export const addBlog = async (req, res) => {
       message: "Blog added successfully",
     });
   } catch (error) {
-    console.error(error);
     console.log(error);
     return res.status(500).json({
       success: false,

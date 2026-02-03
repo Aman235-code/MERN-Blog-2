@@ -19,7 +19,6 @@ const blogSchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      required: true,
     },
     isPublished: {
       type: Boolean,

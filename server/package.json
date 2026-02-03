@@ -12,10 +12,11 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "cloudinary": "^2.9.0",
     "cors": "^2.8.6",
+    "datauri": "^4.1.0",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
-    "imagekit": "^6.0.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.1.5",
     "multer": "^2.0.2"
