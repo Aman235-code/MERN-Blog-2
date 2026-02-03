@@ -1,28 +1,34 @@
 import React from "react";
-import { assets, footer_data } from "../assets/assets";
+import { footer_data } from "../assets/assets";
+import logo1 from "../assets/logo1.png";
 
 const Footer = () => {
   return (
-    <div className="px-6 md:px-16 lg:px-24 xl:px-32 bg-primary/3">
-      <div className="flex flex-col md:flex-row items-start justify-between gap-10 py-10 border-b border-gray-500/30 text-gray-500">
+    <div className="px-6 md:px-16 lg:px-24 xl:px-32 bg-gray-900 border-t border-gray-800">
+      <div className="flex flex-col md:flex-row items-start justify-between gap-12 py-14 text-gray-400">
+        {/* Brand */}
         <div>
-          <img src={assets.logo} className="w-32 sm:w-44" alt="logo" />
-          <p className="max-w-102.5 mt-6">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero
-            praesentium id delectus!
+          <img src={logo1} className="w-32 sm:w-44" alt="Postly logo" />
+          <p className="max-w-sm mt-6 text-sm leading-relaxed">
+            Postly is a quiet corner of the internet where ideas, notes, and
+            long thoughts live. Read. Reflect. Move on a little wiser.
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-between w-full md:w-[45%] gap-5">
+        {/* Links */}
+        <div className="flex flex-wrap justify-between w-full md:w-[45%] gap-8">
           {footer_data.map((section, index) => (
             <div key={index}>
-              <h3 className="font-semibold text-base text-gray-900 md:mb-5 mb-2">
+              <h3 className="font-medium text-sm text-gray-200 mb-4">
                 {section.title}
               </h3>
-              <ul className="text-sm space-y-1">
+              <ul className="text-sm space-y-2">
                 {section.links.map((link, i) => (
                   <li key={i}>
-                    <a href="#" className="hover:underline transition">
+                    <a
+                      href="#"
+                      className="text-gray-400 hover:text-white transition-colors"
+                    >
                       {link}
                     </a>
                   </li>
@@ -32,8 +38,10 @@ const Footer = () => {
           ))}
         </div>
       </div>
-      <p className="py-4 text-center text-sm md:text-base text-gray-500/80">
-        Copyright 2026 &copy; QuickBlog CodePlain - All Right Reserved
+
+      {/* Bottom */}
+      <p className="py-6 text-center text-xs text-gray-500">
+        © 2026 Postly. Written and maintained with care.
       </p>
     </div>
   );

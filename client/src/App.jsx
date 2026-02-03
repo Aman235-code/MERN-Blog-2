@@ -1,4 +1,4 @@
- import React from "react";
+import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Blog from "./pages/Blog";
@@ -15,7 +15,7 @@ import { useAppContext } from "./context/AppContext";
 const App = () => {
   const { token } = useAppContext();
   return (
-    <div>
+    <div className="min-h-screen bg-gray-900">
       <Toaster />
       <Routes>
         <Route path="/" element={<Home />} />

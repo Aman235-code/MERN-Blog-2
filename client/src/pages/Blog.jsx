@@ -11,18 +11,14 @@ import toast from "react-hot-toast";
 
 const Blog = () => {
   const { id } = useParams();
-
   const { axios } = useAppContext();
 
   const [data, setData] = useState(null);
   const [comments, setComments] = useState([]);
-
   const [name, setName] = useState("");
   const [content, setContent] = useState("");
 
   const fetchBlogData = async () => {
-    // const data = blog_data.find((item) => item._id === id);
-    // setData(data);
     try {
       const { data } = await axios.get(`/api/blog/${id}`);
       data.success ? setData(data.blog) : toast.error(data.message);
@@ -32,18 +28,14 @@ const Blog = () => {
   };
 
   const fetchComments = async () => {
-    // setComments(comments_data);
     try {
       const { data } = await axios.get(`/api/blog/comments/${id}`);
-      if (data.success) {
-        setComments(data.comments);
-      } else {
-        toast.error(data.message);
-      }
+      if (data.success) setComments(data.comments);
     } catch (error) {
       toast.error(error.message);
     }
   };
+
   const addComment = async (e) => {
     e.preventDefault();
     try {
@@ -56,8 +48,7 @@ const Blog = () => {
         toast.success(data.message);
         setName("");
         setContent("");
-      } else {
-        toast.error(data.message);
+        fetchComments();
       }
     } catch (error) {
       toast.error(error.message);
@@ -69,99 +60,115 @@ const Blog = () => {
     fetchComments();
   }, []);
 
-  console.log(data);
-
   return data ? (
-    <div className="relative">
-      <img
-        src={assets.gradientBackground}
-        className="absolute -top-50 -z-1 opacity-50"
-      />
+    <div className="relative text-gray-300">
       <Navbar />
 
-      <div className="text-center mt-20 text-gray-600">
-        <p className="text-primary py-4 font-medium">
-          Published On {Moment(data.createdAt).format("MMMM Do YYYY")}
+      {/* Header */}
+      <div className="text-center mt-20 px-4">
+        <p className="text-primary text-sm font-medium">
+          Published on {Moment(data.createdAt).format("MMMM Do, YYYY")}
         </p>
-        <h1 className="text-2xl sm:text-5xl font-semibold max-w-2xl mx-auto text-gray-800">
+
+        <h1 className="mt-4 text-3xl sm:text-5xl font-semibold max-w-3xl mx-auto text-gray-100">
           {data.title}
         </h1>
-        <h2 className="my-5 max-w-lg truncate mx-auto">{data.subTitle}</h2>
-        <p className="inline-block py-1 px-4 rounded-full mb-6 border text-sm border-primary/35 bg-primary/5 font-medium text-primary">
-          Aman Ahamed
+
+        <p className="mt-4 text-gray-400 max-w-xl mx-auto">
+          {data.subTitle}
         </p>
+
+        <span className="inline-block mt-6 px-4 py-1 text-xs rounded-full bg-primary/15 text-primary">
+          By Aman Ahamed
+        </span>
       </div>
 
-      <div className="mx-5 max-w-5xl md:mx-auto my-10 mt-6">
-        <img src={data.image} className="rounded-3xl mb-5" />
-        <div
-          className="rich-text max-w-3xl mx-auto"
-          dangerouslySetInnerHTML={{ __html: data.description }}
-        ></div>
+      {/* Content */}
+      <div className="mx-5 max-w-5xl md:mx-auto my-14">
+        <img
+          src={data.image}
+          className="rounded-3xl mb-10 w-auto m-auto object-cover shadow-lg"
+        />
 
-        <div className="mt-14 mb-10 max-w-3xl mx-auto">
-          <p className="font-semibold mb-4">Comments ({comments.length})</p>
-          <div className="flex flex-col gap-4">
+        <div
+          className="rich-text max-w-3xl mx-auto text-white leading-relaxed"
+          dangerouslySetInnerHTML={{ __html: data.description }}
+        />
+
+        {/* Comments */}
+        <div className="mt-20 max-w-3xl mx-auto">
+          <h3 className="font-semibold text-lg mb-6">
+            Comments ({comments.length})
+          </h3>
+
+          <div className="flex flex-col gap-5">
             {comments.map((item, index) => (
               <div
                 key={index}
-                className="relative bg-primary/2 border border-primary/5 max-w-xl p-4 rounded text-gray-600"
+                className="rounded-xl border border-gray-800 bg-gray-950/70 p-4"
               >
-                <div className="flex items-center gap-2 mb-2">
+                <div className="flex items-center gap-3 mb-2">
                   <img src={assets.user_icon} className="w-6" />
-                  <p className="font-medium">{item.name}</p>
+                  <p className="font-medium text-gray-200">{item.name}</p>
+                  <span className="text-xs text-gray-500 ml-auto">
+                    {Moment(item.createdAt).fromNow()}
+                  </span>
                 </div>
-                <p className="text-sm max-w-md ml-8">{item.content}</p>
-                <div className="absolute right-4 bottom-3 flex items-center gap-2 text-xs">
-                  {Moment(item.createdAt).fromNow()}
-                </div>
+                <p className="text-sm text-gray-400 ml-9">
+                  {item.content}
+                </p>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="max-w-3xl mx-auto">
-          <p className="font-semibold mb-4">Add your comment</p>
+        {/* Add comment */}
+        <div className="mt-16 max-w-3xl mx-auto">
+          <h3 className="font-semibold mb-4">Leave a comment</h3>
+
           <form
-            action=""
             onSubmit={addComment}
-            className="flex flex-col items-start gap-4 max-w-lg"
+            className="flex flex-col gap-4 max-w-lg"
           >
             <input
               type="text"
-              placeholder="Name"
+              placeholder="Your name"
               required
-              onChange={(e) => setName(e.target.value)}
               value={name}
-              className="w-full p-2 border border-gray-300 rounded outline-none"
+              onChange={(e) => setName(e.target.value)}
+              className="bg-gray-950 border border-gray-800 rounded p-3 outline-none focus:border-primary"
             />
 
             <textarea
-              className="w-full p-2 border border-gray-300 rounded outline-none h-48"
-              name=""
-              placeholder="Comment"
-              onChange={(e) => setContent(e.target.value)}
-              value={content}
+              placeholder="Write your thoughts..."
               required
-            ></textarea>
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              className="bg-gray-950 border border-gray-800 rounded p-3 h-40 outline-none focus:border-primary"
+            />
 
             <button
               type="submit"
-              className="bg-primary text-white rounded p-2 px-8 hover:scale-102 transition-all cursor-pointer"
+              className="self-start bg-primary px-8 py-2 rounded text-white hover:opacity-90 transition"
             >
               Submit
             </button>
           </form>
         </div>
 
+        {/* Share */}
         <div className="my-24 max-w-3xl mx-auto">
-          <p className="font-semibold my-4">
-            Share this article on social media
-          </p>
-          <div className="flex">
-            <img src={assets.facebook_icon} width={50} />
-            <img src={assets.twitter_icon} width={50} />
-            <img src={assets.googleplus_icon} width={50} />
+          <p className="font-semibold mb-4">Share this post</p>
+          <div className="flex gap-4">
+            {[assets.facebook_icon, assets.twitter_icon, assets.googleplus_icon].map(
+              (icon, i) => (
+                <img
+                  key={i}
+                  src={icon}
+                  className="w-10 cursor-pointer hover:scale-110 transition"
+                />
+              )
+            )}
           </div>
         </div>
       </div>

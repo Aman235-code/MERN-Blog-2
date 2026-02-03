@@ -8,18 +8,33 @@ const BlogCard = ({ blog }) => {
   return (
     <div
       onClick={() => navigate(`/blog/${_id}`)}
-      className="w-full rounded-lg overflow-hidden shadow hover:scale-102 hover:shadow-primary/25 duration-300 cursor-pointer"
+      className="group w-full cursor-pointer overflow-hidden rounded-2xl border border-gray-800 bg-gray-950/80 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/20"
     >
-      <img src={image} alt="" className="aspect-video" />
-      <span className="ml-5 mt-4 px-3 py-1 inline-block bg-primary/20 rounded-full text-primary text-xs">
-        {category}
-      </span>
+      {/* Image */}
+      <div className="overflow-hidden">
+        <img
+          src={image}
+          alt={title}
+          className="aspect-video w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+      </div>
+
+      {/* Content */}
       <div className="p-5">
-        <h5 className="mb-2 font-medium text-gray-900">{title}</h5>
+        <span className="inline-block mb-3 rounded-full bg-primary/15 px-3 py-1 text-xs font-medium text-primary">
+          {category}
+        </span>
+
+        <h5 className="mb-2 line-clamp-2 text-sm font-semibold text-gray-100">
+          {title}
+        </h5>
+
         <p
-          className="mb-3 text-xs text-gray-600"
-          dangerouslySetInnerHTML={{ __html: description.slice(0, 80) }}
-        ></p>
+          className="text-xs leading-relaxed text-gray-400 line-clamp-3"
+          dangerouslySetInnerHTML={{
+            __html: description.slice(0, 120),
+          }}
+        />
       </div>
     </div>
   );

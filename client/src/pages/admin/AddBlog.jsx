@@ -9,31 +9,26 @@ import { parse } from "marked";
 const AddBlog = () => {
   const { axios } = useAppContext();
   const [isAdding, setIsAdding] = useState(false);
-
-  const [image, setImage] = useState(false);
+  const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState("");
   const [subtitle, setSubTitle] = useState("");
   const [category, setCategory] = useState("Startup");
   const [isPublished, setIsPublished] = useState(false);
+
   const editorRef = useRef(null);
   const quillRef = useRef(null);
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     setIsAdding(true);
-
     try {
       const formData = new FormData();
-
-      // text fields
       formData.append("title", title);
       formData.append("subTitle", subtitle);
       formData.append("description", quillRef.current.root.innerHTML);
       formData.append("category", category);
       formData.append("isPublished", isPublished);
-
-      // image (IMPORTANT: key must be "file")
       formData.append("file", image);
 
       const { data } = await axios.post("/api/blog/add", formData);
@@ -44,7 +39,7 @@ const AddBlog = () => {
         setSubTitle("");
         setCategory("Startup");
         setIsPublished(false);
-        setImage(false);
+        setImage(null);
         quillRef.current.root.innerHTML = "";
       } else {
         toast.error(data.message);
@@ -84,14 +79,15 @@ const AddBlog = () => {
   return (
     <form
       onSubmit={onSubmitHandler}
-      className="flex-1 bg-blue-50/50 text-gray-600 h-full overflow-scroll"
+      className="flex-1 bg-gray-900 text-gray-300 h-full overflow-y-auto p-6 sm:p-10"
     >
-      <div className="bg-white w-full max-w-3xl p-4 md:p-10 sm:m-10 shadow rounded">
-        <p>Upload Thumbnail</p>
-        <label htmlFor="image">
+      <div className="bg-gray-800 max-w-3xl w-full p-6 sm:p-10 mx-auto rounded-2xl shadow-lg">
+        {/* Thumbnail Upload */}
+        <p className="text-gray-200 font-medium">Upload Thumbnail</p>
+        <label htmlFor="image" className="block mt-2 cursor-pointer">
           <img
             src={!image ? assets.upload_area : URL.createObjectURL(image)}
-            className="mt-2 h-16 rounded cursor-pointer"
+            className="h-20 object-cover rounded-lg border border-gray-700 hover:scale-105 transition"
           />
           <input
             onChange={(e) => setImage(e.target.files[0])}
@@ -101,75 +97,86 @@ const AddBlog = () => {
             required
           />
         </label>
-        <p className="mt-4">Blog Title</p>
+
+        {/* Title */}
+        <p className="mt-4 text-gray-200 font-medium">Blog Title</p>
         <input
           type="text"
           onChange={(e) => setTitle(e.target.value)}
           value={title}
           placeholder="Type here"
           required
-          className="w-full max-w-lg mt-2 p-2 border border-gray-300 outline-none rounded"
+          className="w-full mt-2 p-2 rounded border border-gray-700 bg-gray-900 outline-none focus:ring-2 focus:ring-primary"
         />
 
-        <p className="mt-4">Sub Title</p>
+        {/* Subtitle */}
+        <p className="mt-4 text-gray-200 font-medium">Sub Title</p>
         <input
           type="text"
           onChange={(e) => setSubTitle(e.target.value)}
           value={subtitle}
           placeholder="Type here"
           required
-          className="w-full max-w-lg mt-2 p-2 border border-gray-300 outline-none rounded"
+          className="w-full mt-2 p-2 rounded border border-gray-700 bg-gray-900 outline-none focus:ring-2 focus:ring-primary"
         />
 
-        <p className="mt-4">Blog Description</p>
-        <div className="max-w-lg h-74 pb-16 sm:pb-10 pt-2 relative">
-          <div ref={editorRef}></div>
+        {/* Description / Quill Editor */}
+        <p className="mt-4 text-gray-200 font-medium">Blog Description</p>
+        <div className="relative  max-w-full h-80 mt-2 border border-gray-700 rounded-lg overflow-hidden shadow-sm bg-white">
+          {/* Quill Editor */}
+          <div ref={editorRef} className="h-full p-2 text-black"></div>
+
+          {/* Loading Overlay */}
           {loading && (
-            <div className="absolute right-0 top-0 bottom-0 left-0 flex items-center justify-center bg-black/10 mt-2">
-              <div className="w-8 h-8 rounded-full border-2 border-t-white animate-spin"></div>
+            <div className="absolute inset-0 flex items-center justify-center bg-black/25">
+              <div className="w-10 h-10 border-4 border-t-primary border-gray-300 rounded-full animate-spin"></div>
             </div>
           )}
+
+          {/* Generate with AI Button */}
           <button
             type="button"
             disabled={loading}
             onClick={generateContent}
-            className="absolute bottom-1 right-2 ml-2 text-xs text-white bg-black/70 px-4 py-1.5 rounded hover:underline cursor-pointer"
+            className="absolute bottom-3 right-3 text-xs text-white bg-primary px-3 py-1.5 rounded shadow hover:brightness-110 transition"
           >
             Generate with AI
           </button>
         </div>
 
-        <p className="mt-4">Blog Category</p>
-        <select
-          onChange={(e) => setCategory(e.target.value)}
-          name="category"
-          className="mt-2 px-3 py-2 border text-gray-500 border-gray-300 outline-none rounded"
-        >
-          <option value="">Select category</option>
-          {blogCategories.map((item, index) => {
-            return (
-              <option key={index} value={item}>
-                {item}
-              </option>
-            );
-          })}
-        </select>
+        {/* Category & Publish */}
+        <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-4">
+          <div>
+            <p className="text-gray-200 font-medium">Blog Category</p>
+            <select
+              onChange={(e) => setCategory(e.target.value)}
+              value={category}
+              className="mt-10 px-3 py-2 rounded border border-gray-700 bg-gray-900 text-gray-300 outline-none focus:ring-2 focus:ring-primary"
+            >
+              {blogCategories.map((item, index) => (
+                <option key={index} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <div className="flex gap-2 mt-4">
-          <p>Publish Now</p>
-          <input
-            type="checkbox"
-            checked={isPublished}
-            className="scale-125 cursor-pointer"
-            onChange={(e) => setIsPublished(e.target.checked)}
-            name=""
-          />
+          <div className="flex items-center gap-2 mt-8 sm:mt-0">
+            <input
+              type="checkbox"
+              checked={isPublished}
+              className="mt-16 scale-125 cursor-pointer"
+              onChange={(e) => setIsPublished(e.target.checked)}
+            />
+            <p className="mt-16 text-gray-200 font-medium">Publish Now</p>
+          </div>
         </div>
 
+        {/* Submit Button */}
         <button
           type="submit"
           disabled={isAdding}
-          className="mt-8 w-40 h-10 bg-primary text-white rounded cursor-pointer text-sm"
+          className="mt-6 w-full sm:w-40 h-10 bg-primary text-white rounded-lg hover:brightness-110 transition"
         >
           {isAdding ? "Adding..." : "Add Blog"}
         </button>

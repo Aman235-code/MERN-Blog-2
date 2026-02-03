@@ -5,9 +5,7 @@ import toast from "react-hot-toast";
 
 const CommentTableItem = ({ comment, fetchComments }) => {
   const { blog, createdAt, _id } = comment;
-
   const BlogDate = new Date(createdAt);
-
   const { axios } = useAppContext();
 
   const approveComment = async () => {
@@ -36,36 +34,51 @@ const CommentTableItem = ({ comment, fetchComments }) => {
   };
 
   return (
-    <tr className="order-y border-gray-300">
-      <td className="px-6 py-4">
-        <b className="font-medium text-gray-600">Blog</b> : {blog.title}
-        <br />
-        <br />
-        <b className="font-medium text-gray-600">Name</b>: {comment.name}
-        <br />
-        <b className="font-medium text-gray-600">Comment:</b> {comment.content}
+    <tr className="border-b border-gray-700 hover:bg-gray-800 transition">
+      {/* Blog and Comment Details */}
+      <td className="px-6 py-4 max-w-sm">
+        <div className="flex flex-col gap-1">
+          <span className="text-gray-300 font-medium">
+            Blog: <span className="text-gray-100">{blog.title}</span>
+          </span>
+          <span className="text-gray-300 font-medium">
+            Name: <span className="text-gray-100">{comment.name}</span>
+          </span>
+          <span className="text-gray-300 font-medium">
+            Comment: <span className="text-gray-100">{comment.content}</span>
+          </span>
+        </div>
       </td>
-      <td className="px-6 py-4 max-sm:hidden">
+
+      {/* Date */}
+      <td className="px-6 py-4 max-sm:hidden text-gray-400">
         {BlogDate.toLocaleDateString()}
       </td>
+
+      {/* Actions */}
       <td className="px-6 py-4">
-        <div className="inline-flex items-center gap-4">
+        <div className="flex items-center gap-3">
           {!comment.isApproved ? (
-            <img
-              src={assets.tick_icon}
+            <button
               onClick={approveComment}
-              className="w-5 hover:scale-110 transition-all cursor-pointer"
-            />
+              className="bg-green-600 text-white rounded-full p-1.5 hover:scale-110 transition"
+              title="Approve Comment"
+            >
+              <img src={assets.tick_icon} className="w-4" alt="Approve" />
+            </button>
           ) : (
-            <p className="text-xs border border-green-600 bg-green-100 text-green-600 rounded-full px-3 py-1">
+            <span className="text-xs border border-green-600 bg-green-100 text-green-600 rounded-full px-3 py-1">
               Approved
-            </p>
+            </span>
           )}
-          <img
+
+          <button
             onClick={deleteComment}
-            src={assets.bin_icon}
-            className="w-5 hover:scale-110 transition-all cursor-pointer"
-          />
+            className="bg-red-600 text-white rounded-full p-1.5 hover:scale-110 transition"
+            title="Delete Comment"
+          >
+            <img src={assets.bin_icon} className="w-4" alt="Delete" />
+          </button>
         </div>
       </td>
     </tr>

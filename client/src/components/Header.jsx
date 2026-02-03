@@ -4,9 +4,9 @@ import { useAppContext } from "../context/AppContext";
 
 const Header = () => {
   const { input, setInput } = useAppContext();
-  const inputRef = useRef();
+  const inputRef = useRef(null);
 
-  const onSubmitHandler = async (e) => {
+  const onSubmitHandler = (e) => {
     e.preventDefault();
     setInput(inputRef.current.value);
   };
@@ -17,58 +17,73 @@ const Header = () => {
   };
 
   return (
-    <div className="mx-8 sm:mx-16 xl:mx-24 relative">
-      <div className="text-center mt-20 mb-8">
-        <div className="inline-flex items-center justify-center gap-4 px-6 py-1.5 mb-4 border border-primary/40 bg-primary/10 rounded-full text-sm text-primary">
-          <p>New: AI Feature integrated</p>
-          <img src={assets.star_icon} className="w-2.5" alt="" />
+    <section className="relative mx-6 sm:mx-16 xl:mx-28">
+      <div className="text-center pt-24 pb-14 relative z-10">
+        {/* Badge */}
+        <div
+          className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 
+                        rounded-full border border-white/10 
+                        bg-white/5 text-xs text-gray-300 backdrop-blur"
+        >
+          <span className="text-primary">New</span>
+          <span>New posts added regularly</span>
+          <img src={assets.star_icon} className="w-3 opacity-80" alt="" />
         </div>
 
-        <h1 className="text-3xl sm:text-6xl font-semibold sm:leading-16 text-gray-700">
-          Code plain <span className="text-primary">blogging</span> <br />{" "}
-          platform.
+        <h1 className="text-4xl sm:text-6xl font-semibold tracking-tight text-white">
+          Thoughts worth sharing on <span className="text-primary">Postly</span>
         </h1>
 
-        <p className="my-6 sm:my-8 max-w-2xl m-auto max-sm:text-xs text-gray-500">
-          This is your space to think out loud, to share what matters, and to
-          write without filters. Whether it's one word or a thousand, your story
-          starts right here.
+        <p className="mt-6 max-w-2xl mx-auto text-gray-400 text-sm sm:text-base leading-relaxed">
+          A personal blog where I share thoughts, ideas, and things I am
+          learning. Written slowly, published intentionally.
         </p>
 
+        {/* Search */}
         <form
           onSubmit={onSubmitHandler}
-          className="flex justify-between max-w-lg max-sm:scale-75 mx-auto border border-gray-300 bg-white rounded overflow-hidden"
+          className="group mt-10 mx-auto max-w-xl flex items-center 
+                     rounded-full border border-white/10 
+                     bg-white/5 backdrop-blur overflow-hidden
+                     focus-within:border-primary/60 transition"
         >
           <input
-            className="w-full pl-14 outline-none"
-            type="text"
-            placeholder="Search for blogs"
             ref={inputRef}
+            type="text"
+            placeholder="Search posts, topics, or ideas"
+            className="flex-1 bg-transparent px-6 py-3 text-sm text-white 
+                       placeholder-gray-400 outline-none"
           />
+
           <button
-            className="bg-primary text-white px-8 py-2 m-1.5 rounded hover:scale-105 transition-all cursor-pointer"
             type="submit"
+            className="m-1.5 rounded-full bg-primary px-6 py-2.5 
+                       text-sm text-white transition
+                       hover:scale-105 active:scale-95"
           >
             Search
           </button>
         </form>
-      </div>
-      <div className="text-center">
+
+        {/* Clear */}
         {input && (
           <button
             onClick={onClear}
-            className="border font-light text-xs py-1 px-3 rounded-sm shadow-custom-sm cursor-pointer"
+            className="mt-4 text-xs text-gray-400 hover:text-white transition"
           >
-            Clear Search
+            Clear search
           </button>
         )}
       </div>
+
+      {/* Glow background */}
       <img
         src={assets.gradientBackground}
         alt=""
-        className="absolute -top-50 -z-1 opacity-50"
+        className="absolute -top-32 left-1/2 -translate-x-1/2 
+                   w-225 opacity-40 blur-2xl pointer-events-none"
       />
-    </div>
+    </section>
   );
 };
 
