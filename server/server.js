@@ -12,8 +12,8 @@ await connectDB();
 app.use(
   cors({
     origin: [
-      // "https://postly-topaz.vercel.app",
-      "http://localhost:5173",
+      "https://postly-topaz.vercel.app",
+      // "http://localhost:5173",
     ],
     credentials: true,
   }),
