@@ -89,6 +89,7 @@ export const getBlogById = async (req, res) => {
 export const deleteBlogById = async (req, res) => {
   try {
     const { id } = req.body;
+       console.log(id);
     await Blog.findByIdAndDelete(id);
 
     return res.status(200).json({
@@ -114,7 +115,6 @@ export const togglePublish = async (req, res) => {
       success: true,
       message: "Blog staus updated successfully",
     });
-    
   } catch (error) {
     console.log(error);
     return res.status(500).json({
