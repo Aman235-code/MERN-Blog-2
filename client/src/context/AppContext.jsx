@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -22,6 +23,15 @@ export const AppProvider = ({ children }) => {
       toast.error(error.message);
     }
   };
+
+  useEffect(() => {
+    fetchBlogs();
+    const token = localStorage.getItem("token");
+    if (token) {
+      setToken(token);
+      axios.defaults.headers.common["Authorization"] = `${token}`;
+    }
+  }, []);
 
   const value = {
     axios,
