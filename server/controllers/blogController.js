@@ -2,6 +2,7 @@ import Blog from "../models/Blog.js";
 import cloudinary from "../config/cloudinary.js";
 import getDataUri from "../config/dataUri.js";
 import Comment from "../models/Comment.js";
+import main from "../config/gemini.js";
 
 export const addBlog = async (req, res) => {
   try {
@@ -161,6 +162,25 @@ export const getBlogComments = async (req, res) => {
     return res.status(200).json({
       success: true,
       comments,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const generateContent = async (req, res) => {
+  try {
+    const { prompt } = req.body;
+    const content = await main(
+      prompt + " Generate a blog content for this topic in simple text format",
+    );
+    return res.json(200).json({
+      success: true,
+      content,
     });
   } catch (error) {
     console.log(error);
