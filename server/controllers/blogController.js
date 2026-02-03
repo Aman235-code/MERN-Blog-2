@@ -1,6 +1,7 @@
 import Blog from "../models/Blog.js";
 import cloudinary from "../config/cloudinary.js";
 import getDataUri from "../config/dataUri.js";
+import Comment from "../models/Comment.js";
 
 export const addBlog = async (req, res) => {
   try {
@@ -89,7 +90,7 @@ export const getBlogById = async (req, res) => {
 export const deleteBlogById = async (req, res) => {
   try {
     const { id } = req.body;
-       console.log(id);
+    console.log(id);
     await Blog.findByIdAndDelete(id);
 
     return res.status(200).json({
@@ -114,6 +115,28 @@ export const togglePublish = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Blog staus updated successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const addComment = async (req, res) => {
+  try {
+    const { blog, name, content } = req.body;
+    await Comment.create({
+      blog,
+      name,
+      content,
+    });
+
+    return res.status(201).json({
+      success: true,
+      message: "Comment added for review",
     });
   } catch (error) {
     console.log(error);
