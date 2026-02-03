@@ -54,7 +54,7 @@ const BlogList = () => {
 
       {/* Blog Grid */}
       {visibleBlogs.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8 mb-28 mx-8 sm:mx-16 xl:mx-40">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-28 mx-8 sm:mx-16 xl:mx-40">
           {visibleBlogs.map((blog) => (
             <BlogCard key={blog._id} blog={blog} />
           ))}

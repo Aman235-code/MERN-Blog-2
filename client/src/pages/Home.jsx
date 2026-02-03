@@ -14,7 +14,7 @@ const Home = () => {
       <BlogList />
       {/* <Newsletter/> */}
       <Footer />
-      <ScrollToTopButton />
+  
     </>
   );
 };

@@ -24,7 +24,7 @@ const ScrollProgress = () => {
   }, []);
 
   return (
-    <div className="h-[3px] w-full bg-transparent">
+    <div className="h-0.75 w-full bg-transparent">
       <div
         className="h-full transition-all duration-150 ease-out"
         style={{

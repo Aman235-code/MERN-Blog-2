@@ -8,6 +8,7 @@ import Footer from "../components/Footer";
 import Loader from "../components/Loader";
 import { useAppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
+import ScrollToTopButton from "../components/ScrollToTopButton";
 
 const Blog = () => {
   const { id } = useParams();
@@ -74,9 +75,7 @@ const Blog = () => {
           {data.title}
         </h1>
 
-        <p className="mt-4 text-gray-400 max-w-xl mx-auto">
-          {data.subTitle}
-        </p>
+        <p className="mt-4 text-gray-400 max-w-xl mx-auto">{data.subTitle}</p>
 
         <span className="inline-block mt-6 px-4 py-1 text-xs rounded-full bg-primary/15 text-primary">
           By Aman Ahamed
@@ -114,9 +113,7 @@ const Blog = () => {
                     {Moment(item.createdAt).fromNow()}
                   </span>
                 </div>
-                <p className="text-sm text-gray-400 ml-9">
-                  {item.content}
-                </p>
+                <p className="text-sm text-gray-400 ml-9">{item.content}</p>
               </div>
             ))}
           </div>
@@ -126,10 +123,7 @@ const Blog = () => {
         <div className="mt-16 max-w-3xl mx-auto">
           <h3 className="font-semibold mb-4">Leave a comment</h3>
 
-          <form
-            onSubmit={addComment}
-            className="flex flex-col gap-4 max-w-lg"
-          >
+          <form onSubmit={addComment} className="flex flex-col gap-4 max-w-lg">
             <input
               type="text"
               placeholder="Your name"
@@ -174,6 +168,7 @@ const Blog = () => {
       </div>
 
       <Footer />
+      <ScrollToTopButton />
     </div>
   ) : (
     <Loader />

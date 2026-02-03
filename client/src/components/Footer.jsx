@@ -1,6 +1,8 @@
 import React from "react";
 import logo1 from "../assets/logo1.png";
-import { Github, Twitter, Linkedin, Instagram } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Github, Twitter, Instagram } from "lucide-react";
+import { FaThreads } from "react-icons/fa6";
 
 const Footer = () => {
   return (
@@ -17,41 +19,45 @@ const Footer = () => {
 
         {/* Social Icons */}
         <div className="flex items-center gap-5">
-          <a
-            href="#"
-            className="p-3 rounded-full border border-white/10
-                       hover:border-primary/60 hover:text-primary
-                       transition-all duration-300 hover:scale-110"
+          <Link
+            to="https://github.com/Aman235-code/"
+            target="_blank"
+            className="p-3 rounded-full border border-white/10 text-gray-400
+                 hover:text-white hover:border-white/30
+                 transition-all duration-300 hover:scale-110"
           >
             <Github size={18} />
-          </a>
+          </Link>
 
-          <a
-            href="#"
-            className="p-3 rounded-full border border-white/10
-                       hover:border-primary/60 hover:text-primary
-                       transition-all duration-300 hover:scale-110"
+          <Link
+            to="https://x.com/Aman4328"
+            target="_blank"
+            className="p-3 rounded-full border border-white/10 text-gray-400
+                 hover:text-[#1DA1F2] hover:border-[#1DA1F2]/50
+                 transition-all duration-300 hover:scale-110"
           >
             <Twitter size={18} />
-          </a>
+          </Link>
 
-          <a
-            href="#"
-            className="p-3 rounded-full border border-white/10
-                       hover:border-primary/60 hover:text-primary
-                       transition-all duration-300 hover:scale-110"
+          <Link
+            to="https://www.threads.net/@sea_cat_fish"
+            target="_blank"
+            className="p-3 rounded-full border border-white/10 text-gray-400
+                 hover:text-white hover:border-white/30
+                 transition-all duration-300 hover:scale-110"
           >
-            <Linkedin size={18} />
-          </a>
+            <FaThreads size={18} />
+          </Link>
 
-          <a
-            href="#"
-            className="p-3 rounded-full border border-white/10
-                       hover:border-primary/60 hover:text-primary
-                       transition-all duration-300 hover:scale-110"
+          <Link
+            to="https://www.instagram.com/sea_cat_fish/"
+            target="_blank"
+            className="p-3 rounded-full border border-white/10 text-gray-400
+                 hover:text-pink-500 hover:border-pink-500/40
+                 transition-all duration-300 hover:scale-110"
           >
             <Instagram size={18} />
-          </a>
+          </Link>
         </div>
       </div>
 

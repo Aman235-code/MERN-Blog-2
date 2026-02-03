@@ -1,82 +1,102 @@
-import React,{ useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const ScrollToTopButton = () => {
   const [progress, setProgress] = useState(0);
-  const [visible, setVisible] = useState(false);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
-    const container = document.scrollingElement || document.documentElement;
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
 
-    const onScroll = () => {
-      const scrollTop = container.scrollTop;
-      const height = container.scrollHeight - container.clientHeight;
-
-      if (height <= 0) return;
-
-      const percent = (scrollTop / height) * 100;
-      setProgress(percent);
-      setVisible(scrollTop > 200);
+      const scrolled = (scrollTop / scrollHeight) * 100;
+      setProgress(scrolled);
+      setShow(scrollTop > 200);
     };
 
-    onScroll();
-    container.addEventListener("scroll", onScroll);
-    return () => container.removeEventListener("scroll", onScroll);
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // initialize
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToTop = () => {
-    (document.scrollingElement || document.documentElement).scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const radius = 22;
+  const radius = 26; // size of circle
+  const stroke = 4;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (progress / 100) * circumference;
 
+  if (!show) return null;
+
   return (
     <div
-      className={`fixed bottom-6 right-6 z-[9999]
-                  transition-all duration-300
-                  ${visible ? "opacity-100 scale-100" : "opacity-0 scale-75 pointer-events-none"}`}
+      style={{
+        position: "fixed",
+        bottom: "20px",
+        right: "20px",
+        zIndex: 999999,
+        width: "64px",
+        height: "64px",
+      }}
     >
+      <svg
+        width="64"
+        height="64"
+        style={{ position: "absolute", top: 0, left: 0, transform: "rotate(-90deg)" }}
+      >
+        {/* Background circle */}
+        <circle
+          cx="32"
+          cy="32"
+          r={radius}
+          fill="transparent"
+          stroke="rgba(255,255,255,0.1)"
+          strokeWidth={stroke}
+        />
+        {/* Progress circle */}
+        <circle
+          cx="32"
+          cy="32"
+          r={radius}
+          fill="transparent"
+          stroke="url(#gradient)"
+          strokeWidth={stroke}
+          strokeDasharray={circumference}
+          strokeDashoffset={offset}
+          strokeLinecap="round"
+          style={{ transition: "stroke-dashoffset 0.2s ease-out" }}
+        />
+        <defs>
+          <linearGradient id="gradient">
+            <stop offset="0%" stopColor="#7cf6ff" />
+            <stop offset="50%" stopColor="#6366f1" />
+            <stop offset="100%" stopColor="#a855f7" />
+          </linearGradient>
+        </defs>
+      </svg>
+
       <button
         onClick={scrollToTop}
-        className="relative h-14 w-14 rounded-full
-                   bg-gray-900/80 backdrop-blur
-                   border border-white/10
-                   flex items-center justify-center"
+        style={{
+          position: "absolute",
+          top: "0",
+          left: "0",
+          width: "64px",
+          height: "64px",
+          borderRadius: "50%",
+          background: "#111827",
+          border: "1px solid rgba(255,255,255,0.1)",
+          color: "white",
+          fontSize: "22px",
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
       >
-        <svg className="absolute inset-0 h-full w-full -rotate-90">
-          <circle
-            cx="28"
-            cy="28"
-            r={radius}
-            fill="transparent"
-            stroke="rgba(255,255,255,0.15)"
-            strokeWidth="3"
-          />
-          <circle
-            cx="28"
-            cy="28"
-            r={radius}
-            fill="transparent"
-            stroke="url(#grad)"
-            strokeWidth="3"
-            strokeDasharray={circumference}
-            strokeDashoffset={offset}
-            strokeLinecap="round"
-          />
-          <defs>
-            <linearGradient id="grad">
-              <stop offset="0%" stopColor="#7cf6ff" />
-              <stop offset="50%" stopColor="#6366f1" />
-              <stop offset="100%" stopColor="#a855f7" />
-            </linearGradient>
-          </defs>
-        </svg>
-
-        <span className="text-white text-lg">↑</span>
+        ↑
       </button>
     </div>
   );
