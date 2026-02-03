@@ -38,30 +38,33 @@ const Header = () => {
           A personal blog where I share thoughts, ideas, and things I am
           learning. Written slowly, published intentionally.
         </p>
-        <br/>
+        <br />
         <p className="text-white">Created by: Aman</p>
 
         {/* Search */}
         <form
           onSubmit={onSubmitHandler}
-          className="group mt-10 mx-auto max-w-xl flex items-center 
-                     rounded-full border border-white/10 
-                     bg-white/5 backdrop-blur overflow-hidden
-                     focus-within:border-primary/60 transition"
+          className="mt-10 mx-auto w-full max-w-xl"
         >
+          {/* Input */}
           <input
             ref={inputRef}
             type="text"
             placeholder="Search posts, topics, or ideas"
-            className="flex-1 bg-transparent px-6 py-3 text-sm text-white 
-                       placeholder-gray-400 outline-none"
+            className="w-full mb-2 rounded-full border border-white/10 
+               bg-white/5 backdrop-blur
+               px-4 py-3 text-sm text-white 
+               placeholder-gray-400 outline-none
+               focus:border-primary/60 transition"
           />
 
+          {/* Button */}
           <button
             type="submit"
-            className="m-1.5 rounded-full bg-primary px-6 py-2.5 
-                       text-sm text-white transition
-                       hover:scale-105 active:scale-95"
+            className=" w-full rounded-full bg-primary px-6 py-3 
+               text-sm text-white transition
+               hover:scale-105 active:scale-95
+               sm:mt-0 sm:w-auto sm:px-6"
           >
             Search
           </button>

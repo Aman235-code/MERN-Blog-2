@@ -41,7 +41,7 @@ const Footer = () => {
 
       {/* Bottom */}
       <p className="py-6 text-center text-xs text-gray-500">
-        © 2026 Postly. Written and maintained with care.
+        © 2026 Postly. Created & Written by Aman.
       </p>
     </div>
   );

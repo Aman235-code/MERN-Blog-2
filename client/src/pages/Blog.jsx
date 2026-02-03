@@ -91,7 +91,7 @@ const Blog = () => {
         />
 
         <div
-          className="rich-text max-w-3xl mx-auto text-white leading-relaxed"
+          className="rich-text max-w-3xl text-justify mx-auto text-white leading-relaxed"
           dangerouslySetInnerHTML={{ __html: data.description }}
         />
 
@@ -157,7 +157,7 @@ const Blog = () => {
         </div>
 
         {/* Share */}
-        <div className="my-24 max-w-3xl mx-auto">
+        {/* <div className="my-24 max-w-3xl mx-auto">
           <p className="font-semibold mb-4">Share this post</p>
           <div className="flex gap-4">
             {[assets.facebook_icon, assets.twitter_icon, assets.googleplus_icon].map(
@@ -170,7 +170,7 @@ const Blog = () => {
               )
             )}
           </div>
-        </div>
+        </div> */}
       </div>
 
       <Footer />
