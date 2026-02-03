@@ -38,6 +38,8 @@ const Header = () => {
           A personal blog where I share thoughts, ideas, and things I am
           learning. Written slowly, published intentionally.
         </p>
+        <br/>
+        <p className="text-white">Created by: Aman</p>
 
         {/* Search */}
         <form
