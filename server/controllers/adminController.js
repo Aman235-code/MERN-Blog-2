@@ -63,3 +63,34 @@ export const getAllComments = async (req, res) => {
     });
   }
 };
+
+export const getDashboard = async (req, res) => {
+  try {
+    const recentBlogs = await Blog.find({})
+      .sort({
+        createdAt: -1,
+      })
+      .limit(5);
+
+    const blogs = await Blog.countDocuments();
+    const comments = await Comment.countDocuments();
+    const drafts = await Blog.countDocuments({ isPublished: false });
+
+    const dashboardData = {
+      blogs,
+      comments,
+      drafts,
+      recentBlogs,
+    };
+
+    return res.status(200).json({
+      success: true,
+      dashboardData,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
