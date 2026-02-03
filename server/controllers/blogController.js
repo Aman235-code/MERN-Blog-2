@@ -174,12 +174,12 @@ export const getBlogComments = async (req, res) => {
 
 export const generateContent = async (req, res) => {
   try {
-    console.log("Here");
+
     const { prompt } = req.body;
     const content = await main(
       prompt + " Generate a blog content for this topic in simple text format",
     );
-    console.log(content);
+
     return res.status(200).json({
       success: true,
       content,
