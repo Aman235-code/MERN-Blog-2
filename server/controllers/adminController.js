@@ -94,3 +94,19 @@ export const getDashboard = async (req, res) => {
     });
   }
 };
+
+export const deleteCommentById = async (req, res) => {
+  try {
+    const { id } = req.body;
+    await Comment.findByIdAndDelete(id);
+    return res.status(200).json({
+      success: true,
+      message: "Comment deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
