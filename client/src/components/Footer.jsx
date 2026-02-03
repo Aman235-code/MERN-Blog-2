@@ -1,11 +1,11 @@
 import React from "react";
-import { footer_data } from "../assets/assets";
 import logo1 from "../assets/logo1.png";
+import { Github, Twitter, Linkedin, Instagram } from "lucide-react";
 
 const Footer = () => {
   return (
     <div className="px-6 md:px-16 lg:px-24 xl:px-32 bg-gray-900 border-t border-gray-800">
-      <div className="flex flex-col md:flex-row items-start justify-between gap-12 py-14 text-gray-400">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-12 py-14 text-gray-400">
         {/* Brand */}
         <div>
           <img src={logo1} className="w-32 sm:w-44" alt="Postly logo" />
@@ -15,27 +15,43 @@ const Footer = () => {
           </p>
         </div>
 
-        {/* Links */}
-        <div className="flex flex-wrap justify-between w-full md:w-[45%] gap-8">
-          {footer_data.map((section, index) => (
-            <div key={index}>
-              <h3 className="font-medium text-sm text-gray-200 mb-4">
-                {section.title}
-              </h3>
-              <ul className="text-sm space-y-2">
-                {section.links.map((link, i) => (
-                  <li key={i}>
-                    <a
-                      href="#"
-                      className="text-gray-400 hover:text-white transition-colors"
-                    >
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+        {/* Social Icons */}
+        <div className="flex items-center gap-5">
+          <a
+            href="#"
+            className="p-3 rounded-full border border-white/10
+                       hover:border-primary/60 hover:text-primary
+                       transition-all duration-300 hover:scale-110"
+          >
+            <Github size={18} />
+          </a>
+
+          <a
+            href="#"
+            className="p-3 rounded-full border border-white/10
+                       hover:border-primary/60 hover:text-primary
+                       transition-all duration-300 hover:scale-110"
+          >
+            <Twitter size={18} />
+          </a>
+
+          <a
+            href="#"
+            className="p-3 rounded-full border border-white/10
+                       hover:border-primary/60 hover:text-primary
+                       transition-all duration-300 hover:scale-110"
+          >
+            <Linkedin size={18} />
+          </a>
+
+          <a
+            href="#"
+            className="p-3 rounded-full border border-white/10
+                       hover:border-primary/60 hover:text-primary
+                       transition-all duration-300 hover:scale-110"
+          >
+            <Instagram size={18} />
+          </a>
         </div>
       </div>
 
