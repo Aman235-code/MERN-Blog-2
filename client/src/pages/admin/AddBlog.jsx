@@ -37,7 +37,7 @@ const AddBlog = () => {
         toast.success(data.message);
         setTitle("");
         setSubTitle("");
-        setCategory("Startup");
+        setCategory("Science and the Unknown");
         setIsPublished(false);
         setImage(null);
         quillRef.current.root.innerHTML = "";

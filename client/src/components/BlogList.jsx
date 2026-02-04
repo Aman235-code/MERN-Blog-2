@@ -1,12 +1,17 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { blogCategories } from "../assets/assets";
 import { motion } from "motion/react";
 import BlogCard from "./BlogCard";
 import { useAppContext } from "../context/AppContext";
+import Pagination from "./Pagination";
+
+const POSTS_PER_PAGE = 6;
 
 const BlogList = () => {
   const [menu, setMenu] = useState("All");
+  const [currentPage, setCurrentPage] = useState(1);
   const { blogs, input } = useAppContext();
 
   const filteredBlogs = () => {
@@ -22,6 +27,15 @@ const BlogList = () => {
   const visibleBlogs = filteredBlogs().filter((blog) =>
     menu === "All" ? true : blog.category === menu,
   );
+
+  // Reset page when filter/search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [menu, input]);
+
+  const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
+  const endIndex = startIndex + POSTS_PER_PAGE;
+  const paginatedBlogs = visibleBlogs.slice(startIndex, endIndex);
 
   return (
     <div>
@@ -53,12 +67,22 @@ const BlogList = () => {
       </div>
 
       {/* Blog Grid */}
-      {visibleBlogs.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-28 mx-8 sm:mx-16 xl:mx-40">
-          {visibleBlogs.map((blog) => (
-            <BlogCard key={blog._id} blog={blog} />
-          ))}
-        </div>
+      {paginatedBlogs.length > 0 ? (
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mx-8 sm:mx-16 xl:mx-40">
+            {paginatedBlogs.map((blog) => (
+              <BlogCard key={blog._id} blog={blog} />
+            ))}
+          </div>
+
+          {/* Pagination BELOW cards */}
+          <Pagination
+            totalPosts={visibleBlogs.length}
+            postsPerPage={POSTS_PER_PAGE}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        </>
       ) : (
         /* Empty State */
         <div className="text-center mb-20 text-gray-500 mt-20">
