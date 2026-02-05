@@ -6,6 +6,7 @@ import { motion } from "motion/react";
 import BlogCard from "./BlogCard";
 import { useAppContext } from "../context/AppContext";
 import Pagination from "./Pagination";
+import BlogCardSkeleton from "./BlogCardSkeleton";
 
 const POSTS_PER_PAGE = 6;
 
@@ -42,10 +43,10 @@ const BlogList = () => {
       {/* Category Filter */}
       <div className="flex justify-center flex-wrap gap-3 sm:gap-6 my-12 relative">
         {blogCategories.map((item, idx) => (
-          <div key={idx} className="relative">
+          <div key={idx} className="relative ">
             <button
               onClick={() => setMenu(item)}
-              className={`relative px-4 py-1.5 text-sm rounded-full transition-colors duration-200
+              className={`relative cursor-pointer px-4 py-1.5 text-sm rounded-full transition-colors duration-200
                 ${
                   menu === item
                     ? "text-white"
@@ -67,15 +68,20 @@ const BlogList = () => {
       </div>
 
       {/* Blog Grid */}
-      {paginatedBlogs.length > 0 ? (
+      {blogs.length === 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mx-8 sm:mx-16 xl:mx-40">
+          {Array.from({ length: POSTS_PER_PAGE }).map((_, idx) => (
+            <BlogCardSkeleton key={idx} />
+          ))}
+        </div>
+      ) : paginatedBlogs.length > 0 ? (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mx-8 sm:mx-16 xl:mx-40">
+          <div className="grid mb-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mx-8 sm:mx-16 xl:mx-40">
             {paginatedBlogs.map((blog) => (
               <BlogCard key={blog._id} blog={blog} />
             ))}
           </div>
 
-          {/* Pagination BELOW cards */}
           <Pagination
             totalPosts={visibleBlogs.length}
             postsPerPage={POSTS_PER_PAGE}
@@ -84,7 +90,6 @@ const BlogList = () => {
           />
         </>
       ) : (
-        /* Empty State */
         <div className="text-center mb-20 text-gray-500 mt-20">
           <p className="text-sm">
             No posts here yet. New writing will appear soon.
